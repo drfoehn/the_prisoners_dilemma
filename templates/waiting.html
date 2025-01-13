@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Warte auf den anderen Verdächtigen{% endblock %}
+
+{% block header %}Warte auf den anderen Verdächtigen{% endblock %}
+
+{% block content %}
+    <p>Hey, {{ player_role }}!</p>
+    <p id="waiting-message">Du hast dich entschieden. Jetzt warten wir nur noch auf die Entscheidung des/der Anderen.</p>
+    <div id="result" style="display: none;">
+
+        <p id="your-choice-text"></p>
+        <p></p>
+        <p id="other-choice-text"></p>
+        <p>Du bekommst <span id="your-score"></span> Jahr(e) aufgebrummt.</p>
+        <p>Dein Kollege bekommt <span id="other-score"></span> Jahr(e) aufgebrummt.</p>
+        <a href="{{ url_for('play', room_code=room_code) }}" class="button" id="next-round">Nächste Runde</a>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getChoiceText(choice, isYourChoice) {
+            if (choice === "Lieber du als ich (Verraten)") {
+                return isYourChoice 
+                    ? "Du hast dich entschlossen, deinen Freund zu verpfeifen. Du Snitch!" 
+                    : "Dein Freund hat dich verpfiffen. Was für ein Verräter!";
+            } else {
+                return isYourChoice
+                    ? "Du bist loyal geblieben. Ehrenmann!" 
+                    : "Dein Freund ist dir treu geblieben. Was für ein Ehrenmann!";
+            }
+        }
+
+        function checkRoundComplete() {
+            $.getJSON("{{ url_for('round_result', room_code=room_code) }}", function(result) {
+                if (result.round_complete) {
+                    $('#your-choice').text(result.your_choice);
+                    $('#other-choice').text(result.other_choice);
+                    $('#your-score').text(result.your_score);
+                    $('#other-score').text(result.other_score);
+                    $('#your-choice-text').text(getChoiceText(result.your_choice, true));
+                    $('#other-choice-text').text(getChoiceText(result.other_choice, false));
+                    $('#waiting-message').hide();
+                    $('#result').show();
+                } else {
+                    setTimeout(checkRoundComplete, 1000);  // Check again after 1 second
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            setTimeout(checkRoundComplete, 1000);  // Start checking after 1 second
+        });
+    </script>
+{% endblock %}
+
+
+
+

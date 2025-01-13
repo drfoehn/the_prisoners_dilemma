@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Round Result{% endblock %}
+
+{% block header %}Round Result{% endblock %}
+
+{% block content %}
+    <p>Your choice: {{ game.choices[player_id] }}</p>
+    <p>Other player's choice: {{ game.choices[1 - player_id] }}</p>
+    <p>Your current score: {{ game.scores[player_id] }}</p>
+    <a href="{{ url_for('play', room_code=room_code) }}"><button>Next Round</button></a>
+{% endblock %}
+

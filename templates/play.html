@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Make Your Choice{% endblock %}
+
+{% block header %}Runde {{ game.current_round + 1 }}{% endblock %}
+
+{% block content %}
+        <h2>Raumcode: {{ room_code }}</h2>
+        
+        <div class="scores">
+            <h2>Aktuelle Punktzahl: {{ game.scores[game.players.index(player_id)] }} </h2>
+        </div>
+
+        <div class="player-section">
+            <h3>Du bist {{ player_role }}</h3>
+            <form action="{{ url_for('make_choice') }}" method="post">
+                <button type="submit" name="choice" value="stay_silent">Ich sag nix du Bullenschwein!</button>
+                <button type="submit" name="choice" value="betray">Er/Sie wars. Doppelschwör!</button>
+            </form>
+        </div>
+    </div>
+    {% endblock %} 
+    {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.post("{{ url_for('reset_round', room_code=room_code) }}");
+        });
+    </script>
+{% endblock %}

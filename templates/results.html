@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Game Results{% endblock %}
+
+{% block header %}Game Over{% endblock %}
+
+{% block content %}
+    <p>Ergebnisse:</p>
+    <p>Player 1 ({{ game.roles[0] }}): {{ game.scores[0] }}</p>
+    <p>Player 2 ({{ game.roles[1] }}): {{ game.scores[1] }}</p>
+    <p>Winner: {{ winner }}</p>
+    <a href="{{ url_for('index') }}"><button>Neues Spiel</button></a>
+{% endblock %}
+

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Prisoner's Dilemma{% endblock %}
+
+{% block header %}Welcome to Prisoner's Dilemma{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('create_room') }}" method="post">
+        <button type="submit">Create Room</button>
+    </form>
+    <form action="{{ url_for('join_room') }}" method="post">
+        <input type="text" name="room_code" placeholder="Enter Room Code" required>
+        <button type="submit">Join Room</button>
+    </form>
+{% endblock %}
+

@@ -1,0 +1,50 @@
+
+### Sample `.gitignore` for a Flask Application
+
+```plaintext
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+*.env
+
+# Flask instance folder
+instance/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Database files
+*.sqlite3
+*.db
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Pytest cache
+.cache
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Miscellaneous
+*.DS_Store
+*.egg-info/
+*.egg
+```
