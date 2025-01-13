@@ -63,6 +63,9 @@ class Game:
             index = self.players.index(player_id)
             return self.roles[index]
         return None
+    
+    def is_game_over(self):
+        return self.current_round >= self.rounds
 
 # Global storage for game states
 game_states = {}
@@ -111,7 +114,7 @@ def play(room_code):
     player_id = session.get('player_id')
     player_role = game.get_player_role(player_id)
     
-    if game.current_round >= game.rounds:
+    if game.is_game_over():
         return redirect(url_for('results', room_code=room_code))
         
     return render_template('play.html', game=game, room_code=room_code, player_id=player_id, player_role=player_role)
@@ -183,11 +186,34 @@ def round_result(room_code):
         'other_score': game.scores[other_index],
         'your_role': game.roles[player_index],
         'other_role': game.roles[other_index],
-        'round_complete': game.is_round_complete()
-
+        'round_complete': game.is_round_complete(),
+        'current_round': game.current_round,
+        'total_rounds': game.rounds
     }
     
     return jsonify(result)
+
+@app.route('/results/<room_code>')
+def results(room_code):
+    if room_code not in game_states:
+        return redirect(url_for('index'))
+    
+    game = game_states[room_code]
+    player_id = session.get('player_id')
+    player_role = game.get_player_role(player_id)
+    player_name = session.get('player_name', 'Unknown Player')
+    
+    # Bestimmen Sie den Gewinner (Spieler mit der niedrigsten Punktzahl)
+    if game.scores[0] < game.scores[1]:
+        winner = f"Player 1 ({game.roles[0]})"
+    elif game.scores[1] < game.scores[0]:
+        winner = f"Player 2 ({game.roles[1]})"
+    else:
+        winner = "Unentschieden"
+
+    return render_template('results.html', game=game, winner=winner, player_name=player_name, player_role=player_role)
+
+
 
 @app.route('/check_next_round/<room_code>')
 def check_next_round(room_code):
