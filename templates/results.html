@@ -2,14 +2,18 @@
 
 {% block title %}Endergebnis{% endblock %}
 
-{% block header %}Der Hammer fällt{% endblock %}
+{% block header %}
+<h1 class="text-center">Der Hammer fällt</h1>
+{% endblock %}
 
 {% block content %}
+<div class="text-center">
     <h2>Der Richter entscheidet:</h2>
     <p>Verdächtiger #1 ({{ game.roles[0] }}): {{ game.scores[0] }} Jahre im Gefängnis</p>
     <p>Verdächtiger #2 ({{ game.roles[1] }}): {{ game.scores[1] }} Jahre im Gefängnis</p>
     <p>Gewinner: {{ winner }}</p>
     <p>Der Spieler mit der kürzesten Gesamtgefängnisstrafe gewinnt!</p>
-    <a href="{{ url_for('index') }}"><button>Neues Spiel</button></a>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Neues Spiel</a>
+</div>
 {% endblock %}
 

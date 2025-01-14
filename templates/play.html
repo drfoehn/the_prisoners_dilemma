@@ -1,30 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Make Your Choice{% endblock %}
+{% block title %}Triff deine Wahl{% endblock %}
 
-{% block header %}Runde {{ game.current_round + 1 }}{% endblock %}
+{% block header %}
+<h1 class="text-center">Runde {{ game.current_round + 1 }}</h1>
+{% endblock %}
 
 {% block content %}
-        <h2>Raumcode: {{ room_code }}</h2>
-        
-        <div class="scores">
-            <h2>Aktuelle Punktzahl: {{ game.scores[game.players.index(player_id)] }} </h2>
-        </div>
-
-        <div class="player-section">
-            <h3>Du bist {{ player_role }}</h3>
-            <form action="{{ url_for('make_choice') }}" method="post">
-                <button type="submit" name="choice" value="stay_silent">Ich sag nix du Bullenschwein!</button>
-                <button type="submit" name="choice" value="betray">Er/Sie wars. Doppelschwör!</button>
-            </form>
-        </div>
+<div class="text-center">
+    <h2>Raumcode: {{ room_code }}</h2>
+    
+    <div class="scores">
+        <h3>Aktuelle Gefängnisstrafe: {{ game.scores[game.players.index(player_id)] }} Jahre</h3>
     </div>
-    {% endblock %} 
-    {% block scripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $.post("{{ url_for('reset_round', room_code=room_code) }}");
-        });
-    </script>
+
+    <div class="player-section mt-4">
+        <h4>Du bist {{ player_role }}</h4>
+        <form action="{{ url_for('make_choice') }}" method="post">
+            <button type="submit" name="choice" value="stay_silent" class="btn btn-outline-primary">Ich sag nix du Bullenschwein!</button>
+            <button type="submit" name="choice" value="betray" class="btn btn-outline-danger">Er/Sie wars. Doppelschwör!</button>
+        </form>
+    </div>
+</div>
+{% endblock %} 
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $.post("{{ url_for('reset_round', room_code=room_code) }}");
+    });
+</script>
 {% endblock %}
